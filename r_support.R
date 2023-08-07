@@ -51,10 +51,6 @@ cut_var <- function(df, cutoff){
 }
 
 perform_ancom <- function(df, y, tab, level) {
-  write.csv(df, 'dfff.csv')
-  write.csv(y, 'yy.csv')
-  write.csv(tab, 'tabb.csv')
-  
   df <- DataFrame(df)
   rownames(df) <- df$taxonomy
   df$taxonomy <- NULL
@@ -78,12 +74,7 @@ perform_ancom <- function(df, y, tab, level) {
                  tax_level = level, fix_formula ="bin_var", prv_cut = 0.0)
   
   res <- out$res
-  write.csv(res, 'res.csv')
   return(res)
 }
-
-#df <- read.csv('dfff.csv')
-#y <- read.csv('yy.csv')
-#tab <- read.csv('tabb.csv')
 
 
