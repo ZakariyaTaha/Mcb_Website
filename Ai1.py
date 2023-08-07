@@ -349,10 +349,6 @@ if is_run:
             st.markdown('**Cutoff used for NearZeroVar:** ' + str(st.session_state.cutoff)) 
         else:
             mk_var = ''
-    
-    if is_filter:
-        st.markdown('**Cutoff used for correlation:** ' + str(filter_threshold))
-        st.markdown('**Number of features remaining after removing correlated features:** ' + str(len(data.columns)))
 
     st.markdown('**Taxa levels considered for the analysis:** ' + str(levels))
     st.markdown('**Number of features before correlation filter:** ' + str(data_before_correlation.shape[1]))  
@@ -384,8 +380,6 @@ if is_run:
         'Number of features before correlation filter: ' + str(data_before_correlation.shape[1]) + '\n' + \
         mk4 + '\n' + \
         mk5 + '\n' + \
-        'Cutoff used for correlation: ' + str(filter_threshold) + '\n' + \
-        'Number of features remaining after removing correlated features (if has been selected): ' + str(len(data.columns)) + '\n' + \
         'Depth used for decision tree: ' + str(depth) + '\n' + \
         'Minimum number of samples required to be at a leaf node: ' + str(min_samples_leaf) + '\n' + \
         'Features identified and used for AI predictions: ' + str(features) + '\n' + \

@@ -142,19 +142,25 @@ if "proceed" in st.session_state.keys() and st.session_state.proceed:
         if beta_measure == 'bray-curtis':
             beta_measure_arg = 'bray'
         try:
-            bt = beta(df, beta_measure_arg, dim_red)
+            if dim_red == 'NMDS':
+                bt, stress = beta(df, beta_measure_arg, dim_red)
+                st.success(f'NMDS stress value: {stress}')
+            else:
+                bt = beta(df, beta_measure_arg, dim_red)
             bt = pd.DataFrame(bt, columns=['PC1', 'PC2'])
             bt['bin_var'] = np.array(y).astype(str)
             fig = px.scatter(bt, x='PC1', y='PC2', color='bin_var', title = f'Beta Diversity using {beta_measure} and {dim_red}')
             fig.for_each_trace(lambda t: t.update(name = st.session_state.int_to_str_var[int(t.name)]))
             st.plotly_chart(fig, config=st.session_state.config)
-        except:
-            st.error('Most probably, the error comes from your dataset having multiple samples with all 0 values in read counts. Connsider removinng these samples.') 
+        except Exception as e:
+            st.error('Most probably, the error comes from your dataset having multiple samples with all 0 values in read counts. Consider removing these samples.') 
+            raise e
 
         if st.session_state.otu_type == 'Read counts':
             st.divider()
-            st.header('AMCOM BC')
+            st.header('ANCOM-BC')
             st.write("This section is about showing results related to ANCOM BC calulcations.")
+            st.warning('**Warning:** If the data is not formatted properly, you may get unusual results.')
 
             st.write("**The 3 dataframes input into ANCOM:** ")
             st.write(st.session_state.ancom_df)
@@ -166,14 +172,28 @@ if "proceed" in st.session_state.keys() and st.session_state.proceed:
             level_input = st.radio('Taxa level to consider', all_levels[1:st.session_state.last_level])
 
             @st.cache_data
-            def perform_ancom(df, y, tax_tab, level):
+            def perform_ancom(dff, yy, tax_tabb, level):
                 ancom = robjects.globalenv['perform_ancom']
-                results = pandas2ri.rpy2py(ancom(pandas2ri.py2rpy(df), pandas2ri.py2rpy(y), pandas2ri.py2rpy(tax_tab), level))
+
+                # For an unknown reason, the dataframe is not read properly by R, so we save it and read it again
+                dff.to_csv('./Data/temp_df.csv')
+                yy.to_csv('./Data/temp_y.csv')
+                tax_tabb.to_csv('./Data/temp_tab.csv')
+
+                dff = pd.read_csv('./Data/temp_df.csv', index_col=0)
+                yy = pd.read_csv('./Data/temp_y.csv', index_col=0)
+                tax_tabb = pd.read_csv('./Data/temp_tab.csv', index_col=0)
+
+                results = pandas2ri.rpy2py(ancom(pandas2ri.py2rpy(dff), pandas2ri.py2rpy(yy), pandas2ri.py2rpy(tax_tabb), level))
                 return results
-            
+
             results = perform_ancom(st.session_state.ancom_df, st.session_state.ancom_y, st.session_state.tax_tab, level_input)
+            labels = sorted(list(st.session_state.ancom_y['bin_var'].unique()))
+            
             st.write('**ANCOM results:** ')
+            st.write(f'Comparison of {labels[1]} vs {labels[0]} groups')
             st.write(results)
+            #st.write(set(results.iloc[:, 0]).difference(set(list(st.session_state.tax_tab[level_input].unique()))))
             csv_res = results.to_csv(index=False)
             st.download_button("Export ANCOM results", csv_res, 'ancombc.csv', key='download15')
 

@@ -32,22 +32,28 @@ beta_dim_red <- function(df, beta_method, dim_method) {
 
   if (dim_method == 'NMDS') {
     projecs <- metaMDS(dist, distance = beta_method)
+    stress <- projecs$stress
     projecs <- projecs$points
+    return(list(a = projecs, b = stress)) 
+    return(projecs)
   } else if (dim_method == 'PCoA') {
     projecs <- cmdscale(dist)
+    return(projecs)
   } else {
     stop("Invalid dim_method. Choose 'NMDS' or 'PCoA'.")
   }
-  
-  return(projecs) 
 }
 
+?metaMDS
 cut_var <- function(df, cutoff){
   nzv <- nearZeroVar(df, freqCut = cutoff, saveMetrics= TRUE)
   return(nzv$nzv)
 }
 
 perform_ancom <- function(df, y, tab, level) {
+  write.csv(df, 'dfff.csv')
+  write.csv(y, 'yy.csv')
+  write.csv(tab, 'tabb.csv')
   
   df <- DataFrame(df)
   rownames(df) <- df$taxonomy
@@ -71,5 +77,13 @@ perform_ancom <- function(df, y, tab, level) {
   out = ancombc2(data = tse, assay_name = "counts",
                  tax_level = level, fix_formula ="bin_var", prv_cut = 0.0)
   
-  return(out$res)
+  res <- out$res
+  write.csv(res, 'res.csv')
+  return(res)
 }
+
+#df <- read.csv('dfff.csv')
+#y <- read.csv('yy.csv')
+#tab <- read.csv('tabb.csv')
+
+

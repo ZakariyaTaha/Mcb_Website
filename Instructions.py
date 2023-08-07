@@ -46,7 +46,7 @@ st.write('However, the following are some specific information. First, you have 
 st.write('Attention: Because of the way the website has been coded, you have to press "Run AI now" when you want to run the AI algorithms and see the results. If you decide to change some parameters in the previous steps and run again, remember to select "Don\'t run AI predictions for now" before changing the parameters, otherwise each change will trigger a new AI run, which can crash the website.')
 
 st.divider()
-st.write('**Disclaimer**: Our platform is designed for exploratory data analysis. We do not guarantee the accuracy or applicability of the results for specific purposes. Always consult with a subject matter expert when interpreting the results')
+st.write('**Disclaimer**: Our platform is designed for exploratory data analysis. We do not guarantee the accuracy or applicability of the results for specific purposes. Always consult with subject matter experts and/or statisticians when interpreting the results.')
 st.write('If you encounter any issues or need further assistance, please contact taha.zakariya99@gmail.com or ShaillayKumar.Dogra@rd.nestle.com and for general questions contact balamurugan.jagadeesan@rdls.nestle.com')
 
 st.divider()
