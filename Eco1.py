@@ -26,7 +26,7 @@ if "proceed" in st.session_state.keys() and st.session_state.proceed:
         
         st.header('Alpha Diversity')
 
-        st.write("**Choose which taxa levels to plot (default: Phylums)**")
+        st.write("**Choose which taxa levels to plot (default: Phyla)**")
         all_levels = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
 
         levels = st.multiselect('Taxa levels to plot', all_levels[:st.session_state.last_level], default=['phylum'])

@@ -62,7 +62,7 @@ try:
             mcb_s, features_s = process_level_abundance(st.session_state.mcb_s, 'species', st.session_state.keepFeature_percentage, st.session_state.min_var)
             mcbs.append(mcb_s)
         if st.session_state.last_level >= st.session_state.level_to_int['phylum']:
-            mcb_p_r = process_level_abundance(st.session_state.mcb_p, 'phylums ratios', st.session_state.keepFeature_percentage, st.session_state.min_var)
+            mcb_p_r = process_level_abundance(st.session_state.mcb_p, 'phyla ratios', st.session_state.keepFeature_percentage, st.session_state.min_var)
             mcbs.append(mcb_p_r)
         
 
@@ -110,7 +110,7 @@ try:
             mcb_k, features_k = process_level_rel_abundance(st.session_state.mcb_k, 'kingdom', st.session_state.keepFeature_percentage, st.session_state.cutoff)
             mcbs.append(mcb_k)
         if st.session_state.last_level >= st.session_state.level_to_int['phylum']:
-            mcb_p_r = process_level_rel_abundance(st.session_state.mcb_p, 'phylums ratios', st.session_state.keepFeature_percentage, st.session_state.cutoff)
+            mcb_p_r = process_level_rel_abundance(st.session_state.mcb_p, 'phyla ratios', st.session_state.keepFeature_percentage, st.session_state.cutoff)
             mcbs.append(mcb_p_r)
         if st.session_state.last_level >= st.session_state.level_to_int['species']:
             mcb_s, features_s = process_level_rel_abundance(st.session_state.mcb_s, 'species', st.session_state.keepFeature_percentage, st.session_state.cutoff)
@@ -148,13 +148,13 @@ except Exception as e:
     raise e
 
 st.header('Feature selection')
-st.write('Select the taxonomic levels to perform the AI predictions on (default: phylums and phylums ratios, you can add and remove as you wish)')
+st.write('Select the taxonomic levels to perform the AI predictions on (default: phyla and phyla ratios, you can add and remove as you wish)')
 all_levels = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
 
 temp = all_levels[:st.session_state.last_level]
 if st.session_state.last_level >= st.session_state.level_to_int['phylum']:
-    temp.append('phylums ratios') 
-levels = st.multiselect('Taxa level', temp, default=['phylum', 'phylums ratios'])
+    temp.append('phyla ratios') 
+levels = st.multiselect('Taxa level', temp, default=['phylum', 'phyla ratios'])
 
 st.subheader('On each taxonomic level')
 st.write('Your dataset may have some unwanted data, such as "unclassified", "unknown", "ambiguous" microorganism in some taxa level. You can remove them from the analyzed data by adding these microorganisms to the lists below (each list corresponds to a taxonomic level).')
@@ -179,11 +179,11 @@ if 'phylum' in levels:
     level_to_df['phylum'] = mcb_p
     level_to_df_unprocessed['phylum'] = mcb_p_raw
 
-if 'phylums ratios' in levels:
-    st.write('**Phylums ratios**')
-    remove_p_r = st.multiselect('Remove from phylums ratios', mcb_p_r.columns, [])
+if 'phyla ratios' in levels:
+    st.write('**phyla ratios**')
+    remove_p_r = st.multiselect('Remove from phyla ratios', mcb_p_r.columns, [])
     mcb_p_r = mcb_p_r.drop(columns=remove_p_r, axis=1)
-    level_to_df['phylums ratios'] = mcb_p_r
+    level_to_df['phyla ratios'] = mcb_p_r
 
 if 'class' in levels:
     st.write('**Class**')
@@ -230,7 +230,7 @@ data_unprocessed = pd.DataFrame(index=y.index)
 
 for level in levels:
         data = pd.concat([data, level_to_df[level]], axis=1)
-        if level != 'phylums ratios':
+        if level != 'phyla ratios':
             data_unprocessed = pd.concat([data_unprocessed, level_to_df_unprocessed[level]], axis=1)
 
 if data.columns.duplicated().sum() > 0: 

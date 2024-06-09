@@ -247,11 +247,11 @@ def process_level_abundance(mcb, level, keepFeature_percentage, min_var):
         mcb = centered_log_ratio(make_ratio(mcb))
         mcb = mcb[kept_features_fitted]
         return mcb, kept_features_fitted
-    elif level == 'phylums ratios':
+    elif level == 'phyla ratios':
         mcb = mcb[kept_features_fitted]
-        phylums_pairs = list(combinations(mcb.columns, 2))
+        phyla_pairs = list(combinations(mcb.columns, 2))
         ratios = pd.DataFrame()
-        for p1, p2 in phylums_pairs:
+        for p1, p2 in phyla_pairs:
             ratios[f'{p1}/{p2}'] = (mcb[p1]+1).div((mcb[p2]+1))
         return ratios
     
@@ -275,11 +275,11 @@ def process_level_rel_abundance(mcb, level, keepFeature_percentage, cutoff):
         mcb = centered_log_ratio(mcb)
         mcb = mcb[kept_features]
         return mcb, kept_features
-    elif level == 'phylums ratios':
+    elif level == 'phyla ratios':
         mcb = mcb[kept_features]
-        phylums_pairs = list(combinations(mcb.columns, 2)) 
+        phyla_pairs = list(combinations(mcb.columns, 2)) 
         ratios = pd.DataFrame()
-        for p1, p2 in phylums_pairs:
+        for p1, p2 in phyla_pairs:
             ratios[f'{p1}/{p2}'] = (mcb[p1]+1).div((mcb[p2]+1))
         return ratios
     
@@ -551,7 +551,7 @@ def show_shap(shap_values, x_svm):
 def show_stats(mcb, mcb_unprocessed, y, features):
     st.subheader('Statistical tests')   
     st.caption(f'The following tests are performed to test if each variable is statistically significant between {st.session_state.int_to_str_var[0]} and {st.session_state.int_to_str_var[1]}. The tests are performed on both processed data (until CLR) and original data.')
-    st.caption('Note that some new features were introduced (phylums ratios), there\'s no equivalent in the original data. Thus you can\'t see the results of the tests applied on these features in the second table which shows results on the original data (a "nan" will be showed instead).')
+    st.caption('Note that some new features were introduced (phyla ratios), there\'s no equivalent in the original data. Thus you can\'t see the results of the tests applied on these features in the second table which shows results on the original data (a "nan" will be showed instead).')
 
     grp_1 = mcb.loc[y['bin_var']==0]
     grp_2 = mcb.loc[y['bin_var']==1]

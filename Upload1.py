@@ -41,7 +41,7 @@ if data_option == 'Upload your own data':
                 st.session_state.mcb_k = mcbs[st.session_state.level_to_int['kingdom']-1]
             if st.session_state.last_level >= st.session_state.level_to_int['phylum']:
                 st.session_state.mcb_p = mcbs[st.session_state.level_to_int['phylum']-1]
-                st.write('**Chunk of data uploaded (phylums data):**')
+                st.write('**Chunk of data uploaded (phyla data):**')
                 st.write(st.session_state.mcb_p.head())     
             if st.session_state.last_level >= st.session_state.level_to_int['class']:
                 st.session_state.mcb_c = mcbs[st.session_state.level_to_int['class']-1]
@@ -90,7 +90,7 @@ else:
         st.success('Sample data and metadata uploaded successfully.')
         st.write('**Metadata uploaded:**')
         st.write(metadata_raw)
-        st.write('**OTU table uploaded:**')
+        st.write('**Microbiota data table uploaded:**')
         st.write(mcb_raw)
         otu_separator = ';'
         otu_type = 'Read counts' 

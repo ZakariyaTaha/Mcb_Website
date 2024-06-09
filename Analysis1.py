@@ -276,6 +276,7 @@ try:
             st.subheader('Statistical tests')
             st.write('In this subsection, you can perform statistical tests to see if there is a significant difference between the two groups (Tests are performed on original data, unlike the AI tab).')
             st.write('Choose the microorganisms you want to perform the test on. You can choose multiple microorganisms. The test will be performed on each of them.')
+            st.warning('If an error shows, you probably must unselect some microorganisms.')
             microorganisms = st.multiselect('Microorganisms', elem0.columns.tolist(), default=elem0.columns.tolist()[:2])
             stat_tests = ttest_ind, mannwhitneyu, ranksums, kruskal
             stat_tests_names = ['t-test', 'Mann-Whitney U', 'Wilcoxon rank-sum', 'Kruskal-Wallis']
@@ -581,6 +582,7 @@ try:
             st.subheader('Statistical tests')
             st.write('In this subsection, you can perform statistical tests to see if there is a significant difference between the two groups (Tests are performed on original data, unlike the AI tab).')
             st.write('Choose the microorganisms you want to perform the test on. You can choose multiple microorganisms. The test will be performed on each of them.')
+            st.warning('If an error shows, you probably must unselect some microorganisms.')
             microorganisms = st.multiselect('Microorganisms', elem0.columns.tolist(), default=elem0.columns.tolist()[:2])
             stat_tests = ttest_ind, mannwhitneyu, ranksums, kruskal
             stat_tests_names = ['t-test', 'Mann-Whitney U', 'Wilcoxon rank-sum', 'Kruskal-Wallis']
